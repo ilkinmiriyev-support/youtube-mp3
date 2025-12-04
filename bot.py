@@ -27,7 +27,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE):
     url = update.message.text
 
     if not url.startswith("http"):
-        await update.message.reply_text("Zəhmət olmasa düzgün YouTube linki göndər.")
+        await update.message.reply_text("Send valid url")
         return
 
     msg = await update.message.reply_text("▰▱▱▱▱")
@@ -37,7 +37,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # Sinkron yükləmə funksiyası
             def download_video():
                 ydl_opts = {
-                    'format': 'bestaudio/best',
+                    'format': 'bestaudio/best[ext=webm]/bestaudio/best[ext=m4a]/ba',
                     'outtmpl': os.path.join(tmpdir, '%(title)s.%(ext)s'),
                     'quiet': True,
                     'no_warnings': True,
