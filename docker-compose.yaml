@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  yt-mp3-bot:
+    build: .
+    container_name: yt_mp3_bot
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+    restart: unless-stopped
