@@ -27,7 +27,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE):
     url = update.message.text
 
     if not url.startswith("http"):
-        await update.message.reply_text("Send valid url")
+        await update.message.reply_text("Invalid url")
         return
 
     msg = await update.message.reply_text("▰▱▱▱▱")
@@ -37,14 +37,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # Sinkron yükləmə funksiyası
             def download_video():
                 ydl_opts = {
-                    'format': 'bestaudio/best[ext=webm]/bestaudio/best[ext=m4a]/ba',
+                    'format': 'bestaudio/best',
                     'outtmpl': os.path.join(tmpdir, '%(title)s.%(ext)s'),
                     'quiet': True,
                     'no_warnings': True,
-                    'http_headers': {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-                    },
-                    'extractor_args': {'youtube': {'player_client': ['web']}},
                 }
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     info = ydl.extract_info(url, download=True)
@@ -54,11 +50,11 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # Animasiya funksiyası
             async def animate_download(task):
                 frames = [
-                    "▰▱▱▱▱",
-                    "▰▰▱▱▱",
-                    "▰▰▰▱▱",
-                    "▰▰▰▰▱",
-                    "▰▰▰▰▰",
+                "▰▱▱▱▱",
+                "▰▰▱▱▱",
+                "▰▰▰▱▱",
+                "▰▰▰▰▱",
+                "▰▰▰▰▰",
                 ]
                 i = 0
                 while not task.done():
@@ -85,10 +81,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE):
             safe_title = re.sub(r'[\\/*?:"<>|]', "_", info['title'])
             mp3_file = os.path.join(tmpdir, f"{safe_title}.mp3")
 
-            # Dönüştürmə - 320kbps maksimum keyfiyyət
+            # Dönüştürmə
             def convert_to_mp3():
                 audio = AudioSegment.from_file(webm_file, format="webm")
-                audio.export(mp3_file, format="mp3", bitrate="320k")
+                audio.export(mp3_file, format="mp3", bitrate="192k")
 
             await loop.run_in_executor(executor, convert_to_mp3)
 
